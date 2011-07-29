@@ -14,7 +14,9 @@ use vars qw{@syslog};
 # Mock the Unix::Syslog classes to behave as we desire.
 my $mock = Test::MockModule->new('Unix::Syslog');
 $mock->mock('openlog', sub { 1; });
-$mock->mock('syslog',  sub ($$@) { @syslog  = @_; });
+$mock->mock('syslog',  sub ($$@) {
+    my ($priority, $format, @args) = @_;
+    @syslog  = ($priority, sprintf($format, @args)); });
 
 # Do nothing on closelog, since some libc implementations might abort if we
 # didn't really call openlog, and I don't want that pain.
