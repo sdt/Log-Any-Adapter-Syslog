@@ -8,10 +8,14 @@ use base qw{Log::Any::Adapter::Base};
 use Unix::Syslog qw{:macros :subs};
 use File::Basename ();
 
-# When initialized we connect to syslog.
+my $_opened = 0; # Multiple objects are created, but we only want to call
+                 # openlog once. Only $self->{category} varies between objects.
+
+# When initialized the first time we connect to syslog.
+# Can't do it earlier as we don't know the parameters.
 sub init {
     my ($self) = @_;
-    return if $self->{_opened};
+    return if $_opened;
 
     $self->{name} ||= File::Basename::basename($0);
     $self->{name} ||= 'perl';
@@ -21,8 +25,8 @@ sub init {
 
     openlog($self->{name}, $self->{options}, $self->{facility});
 
-    $self->{_opened} = 1;
-    return $self;
+    $_opened = 1;
+    return;
 }
 
 # Create logging methods: debug, info, etc.
