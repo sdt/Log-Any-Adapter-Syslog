@@ -23,7 +23,6 @@ sub init {
 
     # We want to avoid opening the syslog multiple times, but also catch the
     # unsupported case where the parameters have changed.
-    my @keys = qw{name options facility};
     if (not defined $log_params) {
 
         # First time in, note the parameters we used, and open the log>
