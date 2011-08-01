@@ -3,6 +3,7 @@ use warnings;
 
 use Test::More tests => 7;
 use Test::Exception;
+use Test::Warn;
 use Test::MockModule;
 
 use Log::Any qw{$log};
@@ -30,22 +31,12 @@ is $openlog[2], LOG_LOCAL7, "the default LOG_LOCAL7 facility was used";
 
 # Something weird is going on here. Every second one fails.
 
-throws_ok { Log::Any::Adapter->set('Syslog', options => LOG_NDELAY) }
+warning_like { Log::Any::Adapter->set('Syslog', options => LOG_NDELAY) }
     qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
     'changing options is prohibited';
-throws_ok { Log::Any::Adapter->set('Syslog', name => 'example-name') }
+warning_like { Log::Any::Adapter->set('Syslog', name => 'example-name') }
     qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
     'changing name is prohibited';
-throws_ok { Log::Any::Adapter->set('Syslog', facility => LOG_USER) }
-    qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
-    'changing facility is prohibited';
-
-throws_ok { Log::Any::Adapter->set('Syslog', options => LOG_NDELAY) }
-    qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
-    'changing options is prohibited';
-throws_ok { Log::Any::Adapter->set('Syslog', name => 'example-name') }
-    qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
-    'changing name is prohibited';
-throws_ok { Log::Any::Adapter->set('Syslog', facility => LOG_USER) }
+warning_like { Log::Any::Adapter->set('Syslog', facility => LOG_USER) }
     qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
     'changing facility is prohibited';

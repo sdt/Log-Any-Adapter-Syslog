@@ -7,7 +7,7 @@ use base qw{Log::Any::Adapter::Base};
 
 use Unix::Syslog qw{:macros :subs};
 use File::Basename ();
-use Carp qw{croak};
+use Carp qw{cluck};
 
 my $log_params;
 
@@ -30,9 +30,10 @@ sub init {
         openlog($self->{name}, $self->{options}, $self->{facility});
     }
     else {
-        # After that, check the parameters haven't changed.
+
+        # After that, warn if the check the parameters have changed.
         if ($log_params ne $self->_log_params) {
-            croak('Attempting to reinitialize Log::Any::Adapter::Syslog with new parameters');
+            cluck('Attempting to reinitialize Log::Any::Adapter::Syslog with new parameters');
         }
     }
 
