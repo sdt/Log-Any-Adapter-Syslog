@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 7;
+use Test::More;
 use Test::Exception;
 use Test::Warn;
 use Test::MockModule;
@@ -29,8 +29,6 @@ is $openlog[0], 'reinit.t', "the right syslog name was inferred";
 is $openlog[1], LOG_PID, "the default LOG_PID options were used";
 is $openlog[2], LOG_LOCAL7, "the default LOG_LOCAL7 facility was used";
 
-# Something weird is going on here. Every second one fails.
-
 warning_like { Log::Any::Adapter->set('Syslog', options => LOG_NDELAY) }
     qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
     'changing options is prohibited';
@@ -40,3 +38,5 @@ warning_like { Log::Any::Adapter->set('Syslog', name => 'example-name') }
 warning_like { Log::Any::Adapter->set('Syslog', facility => LOG_USER) }
     qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
     'changing facility is prohibited';
+
+done_testing();
