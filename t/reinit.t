@@ -25,18 +25,32 @@ $mock->mock('closelog', sub {});
 lives_ok { Log::Any::Adapter->set('Syslog') }
     "No exception setting the adapter to syslog without arguments";
 
-is $openlog[0], 'reinit.t', "the right syslog name was inferred";
-is $openlog[1], LOG_PID, "the default LOG_PID options were used";
-is $openlog[2], LOG_LOCAL7, "the default LOG_LOCAL7 facility was used";
+is_deeply \@openlog, [ 'reinit.t', LOG_PID, LOG_LOCAL7 ],
+    'openlog called with expected parameters';
 
-warning_like { Log::Any::Adapter->set('Syslog', options => LOG_NDELAY) }
-    qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
-    'changing options is prohibited';
-warning_like { Log::Any::Adapter->set('Syslog', name => 'example-name') }
-    qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
-    'changing name is prohibited';
-warning_like { Log::Any::Adapter->set('Syslog', facility => LOG_USER) }
-    qr/Attempting to reinitialize Log::Any::Adapter::Syslog/,
-    'changing facility is prohibited';
+# Call again with the same parameters and check we didn't call openlog again
+@openlog = ();
+lives_ok { Log::Any::Adapter->set('Syslog') }
+    "No exception setting the adapter to syslog again without arguments";
+is scalar @openlog, 0, 'openlog was not called';
+
+# Call again with the new parameters and check we do call openlog
+lives_ok { Log::Any::Adapter->set('Syslog', name => 'foo') }
+    "No exception setting the adapter to syslog again with new arguments";
+is_deeply \@openlog, [ 'foo', LOG_PID, LOG_LOCAL7 ],
+    'openlog called with expected parameters';
+
+# Call again with the same parameters and check we didn't call openlog again
+@openlog = ();
+lives_ok { Log::Any::Adapter->set('Syslog', name => 'foo') }
+    "No exception setting the adapter to syslog again with new arguments";
+is scalar @openlog, 0, 'openlog was not called';
+
+# Call again with the new parameters and check we do call openlog
+lives_ok { Log::Any::Adapter->set('Syslog', options => LOG_PERROR ) }
+    "No exception setting the adapter to syslog again with new arguments";
+is_deeply \@openlog, [ 'reinit.t', LOG_PERROR, LOG_LOCAL7 ],
+    'openlog called with expected parameters';
+
 
 done_testing();
