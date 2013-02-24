@@ -47,9 +47,9 @@ lives_ok { Log::Any::Adapter->set('Syslog', name => 'foo') }
 is scalar @openlog, 0, 'openlog was not called';
 
 # Call again with the new parameters and check we do call openlog
-lives_ok { Log::Any::Adapter->set('Syslog', options => LOG_PERROR ) }
+lives_ok { Log::Any::Adapter->set('Syslog', options => LOG_NDELAY ) }
     "No exception setting the adapter to syslog again with new arguments";
-is_deeply \@openlog, [ 'reinit.t', LOG_PERROR, LOG_LOCAL7 ],
+is_deeply \@openlog, [ 'reinit.t', LOG_NDELAY, LOG_LOCAL7 ],
     'openlog called with expected parameters';
 
 
