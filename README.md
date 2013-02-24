@@ -4,7 +4,7 @@ Log::Any::Adapter::Syslog - Send Log::Any logs to syslog
 
 # VERSION
 
-version 1.4
+version 1.5
 
 # SYNOPSIS
 
@@ -39,32 +39,32 @@ You can override the default configuration by passing extra arguments to the
 
 - name
 
-    The _name_ argument defaults to the basename of `$0` if not supplied, and is
-    inserted into each line sent to syslog to identify the source.
+The _name_ argument defaults to the basename of `$0` if not supplied, and is
+inserted into each line sent to syslog to identify the source.
 
 - options
 
-    The _options_ configure the behaviour of syslog; see [Unix::Syslog](http://search.cpan.org/perldoc?Unix::Syslog) for
-    details.
+The _options_ configure the behaviour of syslog; see [Unix::Syslog](http://search.cpan.org/perldoc?Unix::Syslog) for
+details.
 
-    The default is `LOG_PID`, which includes the PID of the current process after
-    the process name:
+The default is `LOG_PID`, which includes the PID of the current process after
+the process name:
 
-        example-process[2345]: something amazing!
+    example-process[2345]: something amazing!
 
-    The most likely addition to that is `LOG_PERROR` which causes syslog to also
-    send a copy of all log messages to the controlling terminal of the process.
+The most likely addition to that is `LOG_PERROR` which causes syslog to also
+send a copy of all log messages to the controlling terminal of the process.
 
-    __WARNING:__ If you pass a defined value you are setting, not augmenting, the
-    options.  So, if you want `LOG_PID` as well as other flags, pass them all.
+__WARNING:__ If you pass a defined value you are setting, not augmenting, the
+options.  So, if you want `LOG_PID` as well as other flags, pass them all.
 
 - facility
 
-    The _facility_ determines where syslog sends your messages.  The default is
-    `LOCAL7`, which is not the most useful value ever, but is less bad than
-    assuming the fixed facilities.
+The _facility_ determines where syslog sends your messages.  The default is
+`LOCAL7`, which is not the most useful value ever, but is less bad than
+assuming the fixed facilities.
 
-    See [Unix::Syslog](http://search.cpan.org/perldoc?Unix::Syslog) and [syslog(3)](http://man.he.net/man3/syslog) for details on the available facilities.
+See [Unix::Syslog](http://search.cpan.org/perldoc?Unix::Syslog) and [syslog(3)](http://man.he.net/man3/syslog) for details on the available facilities.
 
 # AUTHORS
 
