@@ -37,7 +37,7 @@ test_level(
 $ENV{LOG_LEVEL} = 'warning';
 lives_ok { Log::Any::Adapter->set('Syslog') }
     "No exception setting the adapter to syslog with options";
-    
+
 test_level(
     trace     => '',
     debug     => '',
@@ -57,7 +57,7 @@ sub test_level {
         my $msg = "${level} level log";
         $log->$level($msg);
         my $islevel = 'is_'.$level;
-    
+
         if ($tests{$level}) {
             is $syslog[2], $msg, "Log::Any passed through the right message";
         } else {
