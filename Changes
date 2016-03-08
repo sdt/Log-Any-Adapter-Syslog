@@ -2,6 +2,9 @@ Revision history for Log-Any-Adapter-Syslog
 
 {{$NEXT}}
 
+1.6       2016-03-08
+ - Add min_level to set minimum log level (thanks MAROS)
+
 1.5       2013-02-25
  - Fix LOG_PERROR test regression from 1.4
 
